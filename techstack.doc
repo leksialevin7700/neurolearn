@@ -1,0 +1,324 @@
+# **Technology Stack Document (techstack.doc)**
+
+## **Product:** NeuroLearn
+
+**Category:** AI-Powered Adaptive Learning Platform
+**Scope:** Hackathon Prototype (Rule-Based & Simulated AI)
+
+---
+
+## **1. Tech Stack Philosophy**
+
+The NeuroLearn tech stack is designed to:
+
+* Be **hackathon-feasible (24-hour build)**
+* Demonstrate **AI-first system design** without heavy ML
+* Support **scalability, explainability, and modularity**
+* Separate **learning logic, analytics, and UI concerns**
+
+> The goal is not heavy computation, but **intelligent system behavior**.
+
+---
+
+## **2. High-Level Architecture Overview**
+
+**Client (UI)**
+→ **API Layer**
+→ **Learning Intelligence Engine (Simulated AI)**
+→ **Analytics & Storage**
+
+Authentication, analytics, and learning decisions are cleanly decoupled.
+
+---
+
+## **3. Frontend Stack**
+
+### **Core Technologies**
+
+* **React (TypeScript)**
+
+  * Component-driven architecture
+  * Predictable state handling
+  * Strong typing for analytics data
+
+* **Vite**
+
+  * Fast local development
+  * Minimal build overhead
+
+* **Tailwind CSS**
+
+  * Utility-first styling
+  * Rapid UI iteration
+  * Consistent design tokens
+
+* **shadcn/ui**
+
+  * Accessible, production-grade UI components
+  * Clean, modern aesthetic suitable for judges
+
+* **Framer Motion**
+
+  * Subtle animations
+  * Roadmap transitions
+  * Quiz flow polish
+
+---
+
+### **Frontend Responsibilities**
+
+* Domain selection UI
+* Skill-level popup
+* Diagnostic & micro quiz interfaces
+* Roadmap visualization
+* Module content rendering
+* Analytics dashboards
+* Revision planner UI
+
+---
+
+## **4. Backend Stack**
+
+### **Primary Backend**
+
+* **Python (FastAPI)**
+
+  * High-performance async backend
+  * Clean API schema with automatic docs (Swagger)
+  * Easy rule-based AI logic implementation
+
+* **Uvicorn**
+
+  * ASGI server for FastAPI
+  * Lightweight and fast for hackathon deployment
+
+---
+
+### **Backend Responsibilities**
+
+* User session handling
+* Domain & roadmap orchestration
+* Quiz submission processing
+* Behavioral analytics ingestion
+* Rule-based AI decision logic
+* Revision urgency computation
+
+---
+
+### **Backend Responsibilities**
+
+* User session handling
+* Domain & roadmap orchestration
+* Quiz submission processing
+* Behavioral analytics ingestion
+* Rule-based AI decision logic
+* Revision urgency computation
+
+---
+
+## **5. Authentication & Identity Management**
+
+* **Supabase Auth**
+
+  * OAuth-based login (Google / Email)
+  * Secure session handling
+
+### **Identity Model**
+
+* Each user assigned a **static User ID** on first login
+* User ID persists across sessions
+* Used as primary key across:
+
+  * Analytics
+  * Roadmaps
+  * Revision history
+
+---
+
+## **6. Database & Storage Layer**
+
+### **Primary Database**
+
+* **MongoDB (Atlas)**
+
+### **Why MongoDB?**
+
+* Schema-flexible for evolving analytics
+* Ideal for JSON-based behavioral data
+* Fast iteration during hackathons
+* Easy horizontal scalability
+
+---
+
+### **Data Storage Strategy**
+
+**Collections:**
+
+* Users
+* Domains
+* Courses
+* Modules
+* Analytics
+* RevisionPlans
+
+**Document-Based Storage:**
+
+* Diagnostic quiz analytics
+* Micro quiz behavior signals
+* Concept-wise mastery data
+* Revision recommendation metadata
+
+---
+
+### **Data Storage Strategy**
+
+**Structured Tables:**
+
+* Users
+* Domains
+* Courses
+* Modules
+
+**JSON-Based Documents:**
+
+* Diagnostic quiz analytics
+* Micro quiz behavior signals
+* Concept-wise mastery data
+* Revision recommendation metadata
+
+---
+
+## **7. AI & Intelligence Layer (Simulated)**
+
+### **Approach**
+
+No heavy ML training. Intelligence is demonstrated through:
+
+* Rule-based logic
+* Prompt-driven GenAI (optional)
+* Agent-style decision simulation
+
+---
+
+### **AI Capabilities Implemented**
+
+* Skill classification logic
+* Proficiency score calculation
+* Guessing vs understanding detection
+* Weak vs strong concept identification
+* Personalized roadmap adaptation
+* Memory-aware revision labeling
+
+> All decisions are **explainable and deterministic**, ideal for hackathon judging.
+
+---
+
+## **8. Analytics & Behavioral Tracking**
+
+### **Captured Signals**
+
+* Accuracy
+* Time per question
+* Total time
+* Option switching
+* Click count
+* Attempt count
+* User explanation text
+
+### **Analytics Format**
+
+* Stored as structured JSON
+* Mapped to:
+
+  * User ID
+  * Domain
+  * Course
+  * Module
+  * Concept
+
+---
+
+## **9. Revision Recommendation Engine**
+
+### **Inputs**
+
+* Quiz performance
+* Accuracy decay
+* Time since last interaction
+
+### **Logic Output**
+
+* Revise now
+* Revise soon (1–2 days)
+* Revise later (within a week)
+
+This logic simulates **spaced repetition behavior** without ML complexity.
+
+---
+
+## **10. API Design (Simplified)**
+
+### **Key Endpoints**
+
+* `POST /auth/login`
+* `GET /domains`
+* `POST /diagnostic/submit`
+* `GET /roadmap/:userId/:domain`
+* `POST /module/quiz/submit`
+* `GET /analytics/:userId`
+* `GET /revision-planner/:userId`
+
+---
+
+## **11. Deployment Strategy (Hackathon-Friendly)**
+
+### **Frontend**
+
+* **Vercel / Netlify**
+
+  * Instant CI/CD
+  * Preview URLs for judges
+
+### **Backend**
+
+* **Render / Railway**
+
+  * Simple Node.js deployment
+  * Environment variable support
+
+### **Database & Auth**
+
+* **MongoDB Atlas (Managed)**
+* **Supabase Auth (OAuth only)**
+
+---
+
+## **12. Security & Ethical Considerations**
+
+* OAuth-based authentication
+* No sensitive personal data stored
+* Analytics tied only to User ID
+* No punitive scoring or dark patterns
+
+---
+
+## **13. Scalability Considerations**
+
+* Domain-agnostic data models
+* JSON-based analytics allow schema evolution
+* AI logic layer can later be replaced with ML models
+* UI supports unlimited domains
+
+---
+
+## **14. Why This Tech Stack Wins Hackathons**
+
+* Clean separation of concerns
+* Demonstrates real AI system thinking
+* Feels production-ready
+* Easy to explain to judges
+* Easy to extend post-hackathon
+
+---
+
+

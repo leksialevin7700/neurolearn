@@ -1,0 +1,338 @@
+
+
+# **NeuroLearn — Refined Web Design Document**
+
+*(Multi-Domain, AI-Driven Learning Platform)*
+
+---
+
+## **1. Design Philosophy**
+
+NeuroLearn’s UI must communicate **intelligence, trust, and focus**.
+
+Core principles:
+
+* **System-first design** (domains are data, AI is the core)
+* **Distraction-free learning**
+* **Visual clarity over decoration**
+* **Explainable intelligence** (users should see *why* something is recommended)
+
+The design should feel:
+
+> *“This platform understands how I think.”*
+
+---
+
+## **2. Supported Domains (Scalable UI)**
+
+The UI must natively support **multiple technical domains** without redesign.
+
+### Domains Displayed
+
+* DSA
+* Web Development
+* AI / ML
+* Cloud
+* DevOps
+* OOPS
+* Computer Networks (CN)
+
+⚠️ Important:
+UI treats **all domains equally**, even if backend depth differs.
+
+---
+
+## **3. Global Layout System**
+
+### **A. Persistent Sidebar (Desktop)**
+
+* Logo + “NeuroLearn”
+* Navigation:
+
+  * Home
+  * My Roadmap
+  * Analytics
+  * Revision Planner
+  * Profile
+
+Minimal icons + text (inspired by Dribbble).
+
+---
+
+### **B. Main Content Area**
+
+* Card-based layout
+* Large whitespace
+* Sectioned hierarchy
+
+---
+
+### **C. Responsive Rules**
+
+* Mobile:
+
+  * Collapsible sidebar
+  * Full-screen quizzes
+  * Sticky CTAs
+* Desktop:
+
+  * Grid dashboards
+  * Side-by-side analytics
+
+---
+
+## **4. Landing Page — Domain Selection**
+
+### UI Structure
+
+* Grid of **Domain Cards**
+* Each card shows:
+
+  * Domain name
+  * Short 1-line description
+  * Progress indicator (if already started)
+
+Example:
+
+```
+[ DSA ]        [ Web Dev ]
+[ AI / ML ]    [ Cloud ]
+[ DevOps ]     [ OOPS ]
+[ CN ]
+```
+
+### Interaction
+
+* Clicking a domain → **Skill Level Popup**
+
+---
+
+## **5. Skill Level Popup (Critical UX Element)**
+
+Modal overlay (centered, soft blur background).
+
+### Options
+
+* Beginner
+* Intermediate
+* Advanced
+
+### Design Intent
+
+* Calm, non-judgmental tone
+* No “test anxiety” visuals
+
+### Behavior
+
+* Beginner → Direct roadmap
+* Intermediate / Advanced → Diagnostic quiz
+
+This popup is **identical across all domains**.
+
+---
+
+## **6. Diagnostic Quiz UI (Pre-Roadmap Intelligence)**
+
+### Design Mode
+
+* Full focus layout
+* One question per screen
+* Minimal navigation
+
+### Visible Elements
+
+* Question
+* Options (large, clickable)
+* Subtle timer
+* Progress indicator (Q2 of 8)
+
+### Invisible (but tracked)
+
+* Time per question
+* Option switching
+* Click count
+* Concept tag
+
+> UI should *not* expose tracking — only feel smooth.
+
+---
+
+## **7. Personalized Roadmap Screen**
+
+### Visual Style
+
+* Vertical or horizontal roadmap
+* Node-based progression
+* Clear lock/unlock states
+
+### Node States
+
+* 🔒 Locked (greyed)
+* ▶ Available (accent color)
+* ✅ Completed (soft success color)
+
+### Each Node Shows
+
+* Module title
+* Estimated time
+* Content type badge (Video / Text / Mixed)
+
+This roadmap adapts per:
+
+* Skill level
+* Diagnostic score
+* AI recommendation
+
+---
+
+## **8. Module Learning Screen**
+
+### Header
+
+* Module title
+* Progress bar (within course)
+* Module status
+
+### Content Area
+
+* Video embed **or**
+* Text explanation
+* Expandable **TL;DR panel** (always present)
+
+### Design Rule
+
+TL;DR must be:
+
+* Visually lighter
+* Always accessible
+* Never hidden behind tabs
+
+---
+
+## **9. Micro Quiz Interface (Integrity-Critical)**
+
+### Mode
+
+* Full-tab takeover
+* No sidebar
+* No distractions
+
+### Layout
+
+* Question (large, centered)
+* Options (stacked)
+* Timer (top-right)
+* “Why did you choose this?” text box
+
+### UX Intent
+
+* Encourage **reflection**, not speed
+* Text box feels conversational, not exam-like
+
+---
+
+## **10. AI Integrity Feedback Screen**
+
+After quiz submission:
+
+### Show:
+
+* Score (softly presented)
+* Strengths
+* Weak concepts (bullet-level)
+
+Example:
+
+> “You’re strong in 7 concepts.
+> Let’s revisit 3 specific ones.”
+
+### Design Rule
+
+* No red “fail” screens
+* No harsh language
+* Supportive tone
+
+---
+
+## **11. Locked Progression UX**
+
+* Next module button:
+
+  * Disabled until cleared
+* Clear visual explanation:
+
+  > “Complete this module to unlock the next one.”
+
+This reinforces **mastery-based learning**.
+
+---
+
+## **12. Analytics Dashboard**
+
+### Sections
+
+1. Progress Overview
+2. Time vs Accuracy
+3. Concept Mastery
+4. Domain-wise performance
+
+### Visualization Style
+
+* Minimal charts
+* Soft colors
+* No data overload
+
+Judges should understand it **in 5 seconds**.
+
+---
+
+## **13. Revision Planner UI**
+
+### Module Cards Show:
+
+* Module name
+* Revision urgency label
+* Last studied timestamp
+
+### Urgency Color Codes
+
+* 🔴 Revise now
+* 🟡 Revise soon
+* 🟢 Can revise later
+
+Clear, glanceable, actionable.
+
+---
+
+## **14. Design Consistency Rules**
+
+| Element    | Rule                     |
+| ---------- | ------------------------ |
+| Cards      | Rounded, soft shadows    |
+| Buttons    | Clear primary/secondary  |
+| Animations | Subtle, purposeful       |
+| Fonts      | Clean sans-serif         |
+| Colors     | Accents only for meaning |
+
+---
+
+## **15. Why This Design Works for 7 Domains**
+
+* Domains are **data-driven**, not UI-driven
+* Same UX flow works for:
+
+  * DSA logic
+  * CN theory
+  * DevOps concepts
+* Only content + analytics change
+
+This proves **scalability**, not just polish.
+
+---
+
+## **16. Hackathon-Ready Justification (Use This Line)**
+
+> “We designed NeuroLearn as a domain-agnostic learning system. The UI remains constant while AI-driven intelligence adapts learning paths across DSA, WebDev, AI/ML, Cloud, DevOps, OOPS, and CN.”
+
+That sentence alone wins points.
+

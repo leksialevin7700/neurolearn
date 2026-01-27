@@ -3,11 +3,16 @@ import { getAnalyticsConsumer } from './consumers/analyticsConsumer';
 import { getMemoryScoreConsumer } from './consumers/memoryScoreConsumer';
 import { getEventProducer } from './producers/eventProducer';
 import { initializeTopics, healthCheckKafka } from './kafka/config';
+import { connectDB, closeDB } from './db/client';
 
 async function startBackendServices() {
   console.log('🚀 Starting Pathwise AI Backend Services...');
 
   try {
+    // Initialize Database
+    console.log('🗄️  Connecting to MongoDB...');
+    await connectDB();
+
     // Initialize Kafka topics
     console.log('📋 Initializing Kafka topics...');
     await initializeTopics();
@@ -36,7 +41,7 @@ async function startBackendServices() {
     console.log('✅ All backend services started successfully!');
     console.log('📊 Grafana available at: http://localhost:3000');
     console.log('🐳 Kafka UI available at: http://localhost:8080');
-    console.log('🗄️  PgAdmin available at: http://localhost:5050');
+    console.log('🗄️  Mongo Express available at: http://localhost:8082');
 
     // Graceful shutdown
     process.on('SIGINT', async () => {
@@ -45,6 +50,7 @@ async function startBackendServices() {
       await producer.disconnect();
       await analyticsConsumer.stop();
       await memoryConsumer.stop();
+      await closeDB();
 
       console.log('👋 Services stopped. Goodbye!');
       process.exit(0);
@@ -56,6 +62,7 @@ async function startBackendServices() {
       await producer.disconnect();
       await analyticsConsumer.stop();
       await memoryConsumer.stop();
+      await closeDB();
 
       console.log('👋 Services stopped. Goodbye!');
       process.exit(0);

@@ -9,19 +9,13 @@ docker-compose up -d
 This starts:
 - Zookeeper (2181)
 - Kafka (9092)
-- PostgreSQL (5432)
+- MongoDB (27017)
 - Grafana (3000)
 - Kafka UI (8080)
-- PgAdmin (5050)
+- Mongo Express (8082)
 
 ### 2. Initialize Analytics Database
-```bash
-# Apply analytics schema
-docker exec postgres psql -U analytics -d learning_platform -f /docker-entrypoint-initdb.d/01-schema.sql
-
-# OR using psql directly
-psql postgresql://analytics:analytics123@localhost:5432/learning_platform < backend/db/analyticsSchema.sql
-```
+MongoDB will automatically create the database and collections on first write. You can view the data using Mongo Express at http://localhost:8082.
 
 ### 3. Start Services
 ```bash
@@ -41,7 +35,7 @@ npm run dev
 ### 4. Access Dashboards
 - **Grafana**: http://localhost:3000 (admin/admin)
 - **Kafka UI**: http://localhost:8080
-- **PgAdmin**: http://localhost:5050 (admin@example.com/admin)
+- **Mongo Express**: http://localhost:8082
 
 ---
 
@@ -53,7 +47,7 @@ Frontend/API
     ↓
     Publish Events → Kafka Topics
     ↓
-    Consumers Process → PostgreSQL
+    Consumers Process → MongoDB
     ↓
     Grafana Queries → Real-time Dashboards
 ```

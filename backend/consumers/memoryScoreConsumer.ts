@@ -1,22 +1,3 @@
-/**
- * Memory Score Consumer Service
- * 
- * Implements Ebbinghaus Forgetting Curve for spaced repetition
- * 
- * Responsibilities:
- * - Consume module quiz and completion events
- * - Calculate forgetting scores based on memory decay
- * - Generate revision urgency signals
- * - Schedule reviews using spaced repetition intervals
- * - Persist memory scores to database
- * 
- * Algorithm:
- * - Memory score starts at 100 after completing module
- * - Decays exponentially based on time since last review
- * - Revision intervals increase with each successful review
- * - Low memory score = high urgency
- */
-
 import { Consumer } from 'kafkajs';
 import { kafka, consumerGroups, topicsConfig } from '../kafka/config';
 import {
@@ -26,7 +7,7 @@ import {
   ModuleCompletionEvent,
   RevisionUrgency,
 } from '../events/types';
-import pool from '../db/client';
+import { getDB } from '../db/client';
 import { getEventProducer } from '../producers/eventProducer';
 
 class MemoryScoreConsumer {
@@ -114,45 +95,45 @@ class MemoryScoreConsumer {
    */
   private async handleModuleQuiz(event: ModuleQuizEvent): Promise<void> {
     try {
-      const client = await pool.connect();
-      try {
-        // Check if record exists
-        const existingQuery = `
-          SELECT * FROM memory_scores
-          WHERE user_id = $1 AND module = $2
-        `;
-        const existingResult = await client.query(existingQuery, [event.user_id, event.module]);
-        const existing = existingResult.rows[0];
+      const db = getDB();
+      const collection = db.collection('memory_scores');
 
-        if (!existing) {
-          // First attempt - initialize memory score
-          const initialScore = this.calculateInitialMemoryScore(event.score);
-          await this.createMemoryRecord(event, initialScore);
-        } else {
-          // Update existing memory score based on performance
-          const updatedScore = this.updateMemoryScore(
-            existing.current_score,
-            existing.days_since_review || 0,
-            event.score
-          );
+      const existing = await collection.findOne({
+        user_id: event.user_id,
+        module: event.module
+      });
 
-          const updateQuery = `
-            UPDATE memory_scores
-            SET current_score = $1, last_reviewed_at = $2, days_since_review = 0, updated_at = NOW()
-            WHERE id = $3
-          `;
-          await client.query(updateQuery, [updatedScore, event.timestamp, existing.id]);
-        }
-
-        // Calculate and publish revision signal
-        await this.publishRevisionSignal(event);
-
-        console.log(
-          `✓ Memory score updated: ${event.user_id} - ${event.module} - score=${event.score}%`
+      if (!existing) {
+        // First attempt - initialize memory score
+        const initialScore = this.calculateInitialMemoryScore(event.score);
+        await this.createMemoryRecord(event, initialScore);
+      } else {
+        // Update existing memory score based on performance
+        const updatedScore = this.updateMemoryScore(
+          existing.current_score,
+          existing.days_since_review || 0,
+          event.score
         );
-      } finally {
-        client.release();
+
+        await collection.updateOne(
+          { _id: existing._id },
+          {
+            $set: {
+              current_score: updatedScore,
+              last_reviewed_at: event.timestamp,
+              days_since_review: 0,
+              updated_at: new Date()
+            }
+          }
+        );
       }
+
+      // Calculate and publish revision signal
+      await this.publishRevisionSignal(event);
+
+      console.log(
+        `✓ Memory score updated: ${event.user_id} - ${event.module} - score=${event.score}%`
+      );
     } catch (error) {
       console.error('Error handling module quiz for memory:', error);
     }
@@ -164,25 +145,20 @@ class MemoryScoreConsumer {
    */
   private async handleModuleCompletion(event: ModuleCompletionEvent): Promise<void> {
     try {
-      const client = await pool.connect();
-      try {
-        // Check if record exists
-        const existingQuery = `
-          SELECT * FROM memory_scores
-          WHERE user_id = $1 AND module = $2
-        `;
-        const existingResult = await client.query(existingQuery, [event.user_id, event.module]);
-        const existing = existingResult.rows[0];
+      const db = getDB();
+      const collection = db.collection('memory_scores');
 
-        if (!existing) {
-          const initialScore = this.calculateInitialMemoryScore(event.final_score);
-          await this.createMemoryRecord(event, initialScore);
-        }
+      const existing = await collection.findOne({
+        user_id: event.user_id,
+        module: event.module
+      });
 
-        console.log(`✓ Memory initialized: ${event.user_id} - ${event.module}`);
-      } finally {
-        client.release();
+      if (!existing) {
+        const initialScore = this.calculateInitialMemoryScore(event.final_score);
+        await this.createMemoryRecord(event, initialScore);
       }
+
+      console.log(`✓ Memory initialized: ${event.user_id} - ${event.module}`);
     } catch (error) {
       console.error('Error handling module completion:', error);
     }
@@ -195,24 +171,29 @@ class MemoryScoreConsumer {
     event: ModuleQuizEvent | ModuleCompletionEvent,
     initialScore: number
   ): Promise<void> {
-    const client = await pool.connect();
     try {
+      const db = getDB();
+      const collection = db.collection('memory_scores');
+
       const forgettingScore = 100 - initialScore;
       const nextReviewDate = this.calculateNextReviewDate(0); // First review in 24h
 
-      const insertQuery = `
-        INSERT INTO memory_scores (
-          user_id, domain, module, current_score, forgetting_score,
-          revision_urgency, last_reviewed_at, next_review_at, decay_factor, review_count
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-      `;
-      await client.query(insertQuery, [
-        event.user_id, event.domain, event.module, initialScore, forgettingScore,
-        this.calculateUrgency(forgettingScore), event.timestamp, nextReviewDate.toISOString(),
-        1.0, 0
-      ]);
-    } finally {
-      client.release();
+      await collection.insertOne({
+        user_id: event.user_id,
+        domain: event.domain,
+        module: event.module,
+        current_score: initialScore,
+        forgetting_score: forgettingScore,
+        revision_urgency: this.calculateUrgency(forgettingScore),
+        last_reviewed_at: event.timestamp,
+        next_review_at: nextReviewDate,
+        decay_factor: 1.0,
+        review_count: 0,
+        created_at: new Date(),
+        updated_at: new Date()
+      });
+    } catch (error) {
+      console.error('Error creating memory record:', error);
     }
   }
 

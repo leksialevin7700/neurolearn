@@ -48,38 +48,36 @@ services:
       retries: 5
 
   # ==================== DATABASE ====================
-  postgres:
-    image: postgres:15-alpine
-    container_name: postgres
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
     environment:
-      POSTGRES_USER: analytics
-      POSTGRES_PASSWORD: analytics123
-      POSTGRES_DB: learning_platform
+      MONGO_INITDB_DATABASE: learning_platform
     ports:
-      - "5432:5432"
+      - "27017:27017"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./backend/db/analyticsSchema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - mongodb_data:/data/db
     networks:
       - kafka-network
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U analytics" ]
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
       interval: 10s
       timeout: 5s
       retries: 5
 
   # ==================== DATABASE ADMIN UI ====================
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: pgadmin
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-      SCRIPT_NAME: /pgadmin
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH_USERNAME: ""
+      ME_CONFIG_BASICAUTH_PASSWORD: ""
     ports:
-      - "5050:80"
+      - "8082:8081"
     depends_on:
-      - postgres
+      - mongodb
     networks:
       - kafka-network
 
@@ -90,13 +88,13 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
-      GF_INSTALL_PLUGINS: "grafana-piechart-panel"
+      GF_INSTALL_PLUGINS: "grafana-piechart-panel,grafana-mongodb-datasource"
       GF_SERVER_ROOT_URL: http://localhost:3000
       GF_PATHS_PROVISIONING: /etc/grafana/provisioning
     ports:
       - "3000:3000"
     depends_on:
-      - postgres
+      - mongodb
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
@@ -129,5 +127,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  mongodb_data:
   grafana_data:

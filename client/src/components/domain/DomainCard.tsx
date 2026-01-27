@@ -34,27 +34,29 @@ export const DomainCard: React.FC<DomainProps> = ({ id, name, description, color
       className="group border-none shadow-sm bg-white dark:bg-slate-900 border dark:border-slate-800 hover:shadow-xl hover:shadow-indigo-500/10 dark:hover:shadow-indigo-900/20 transition-all duration-300 rounded-3xl overflow-hidden cursor-pointer"
       onClick={() => onClick(id)}
     >
-      <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
-         
-         {/* Icon Bubble */}
-         <div className={`w-16 h-16 rounded-2xl ${color} flex items-center justify-center mb-2 group-hover:scale-110 transition-transform duration-300`}>
-            <Icon className={`w-8 h-8 ${iconColor}`} />
-         </div>
+      <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+         <div className={`w-32 h-32 rounded-full ${color} blur-3xl`}></div>
+      </div>
+      
+      <div className="relative z-10 flex flex-col h-full items-center text-center pt-8 pb-6 px-6">
+          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${color} shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+             <Icon className={`w-8 h-8 ${iconColor}`} />
+          </div>
+          
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            {name}
+          </h3>
+          
+          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mb-6">
+            {description}
+          </p>
 
-         {/* Text Content */}
-         <div className="space-y-1">
-            <h3 className="font-bold text-lg text-slate-900">{name}</h3>
-            <p className="text-sm font-medium text-slate-400">{description}</p>
-         </div>
-
-         {/* Footer Row */}
-         <div className="w-full pt-4 flex items-center justify-end border-t border-slate-50 mt-4">
-            <Button size="icon" className="rounded-full w-8 h-8 bg-slate-900 text-white hover:bg-indigo-600 transition-colors">
-               <ArrowRight className="w-4 h-4" />
-            </Button>
-         </div>
-
-      </CardContent>
+          <div className="mt-auto w-full border-t border-slate-100 dark:border-slate-800 pt-4 flex justify-end">
+             <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-300 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                <ArrowRight className="w-4 h-4" />
+             </div>
+          </div>
+      </div>
     </Card>
   );
 };

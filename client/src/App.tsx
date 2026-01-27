@@ -11,13 +11,18 @@ import { RoadmapView } from './pages/RoadmapView';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { ModuleLearning } from './pages/ModuleLearning';
 import { FriendsProgress } from './pages/FriendsProgress';
-
+import { Login } from './pages/auth/Login';
+import { Signup } from './pages/auth/Signup';
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <Router>
         <Routes>
+          {/* Auth Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+
           {/* Standalone Route for Focus Mode */}
           <Route path="/quiz/diagnostic/:domainId" element={<DiagnosticQuiz />} />
 

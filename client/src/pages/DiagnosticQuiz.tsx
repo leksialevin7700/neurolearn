@@ -37,6 +37,7 @@ export const DiagnosticQuiz: React.FC = () => {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
 
   // Focus Mode: Auto Fullscreen & Tab Switch Detection
   useEffect(() => {
@@ -53,14 +54,22 @@ export const DiagnosticQuiz: React.FC = () => {
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        // alert("⚠️ Warning: Tab switching detected! Focus mode is active.");
+         // Tab switch detected
       }
     };
 
+    const handleFullscreenChange = () => {
+        if (!document.fullscreenElement) {
+            setShowWarning(true);
+        }
+    };
+
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
       if (document.fullscreenElement) {
         document.exitFullscreen().catch(err => console.error(err));
       }
@@ -173,7 +182,35 @@ export const DiagnosticQuiz: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col relative">
+       
+       {/* Focus Mode Warning Overlay */}
+       {showWarning && (
+           <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+               <motion.div 
+                 initial={{ scale: 0.9, opacity: 0 }}
+                 animate={{ scale: 1, opacity: 1 }}
+                 className="bg-white dark:bg-slate-900 border border-red-500 rounded-2xl p-8 max-w-md text-center shadow-2xl"
+               >
+                   <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+                       <span className="text-3xl">⚠️</span>
+                   </div>
+                   <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Focus Mode Interrupted</h2>
+                   <p className="text-slate-500 dark:text-slate-400 mb-8">
+                       Please do not exit full screen or switch tabs. Our AI Integrity Layer monitors focus to ensure accurate assessment.
+                   </p>
+                   <Button 
+                     onClick={() => {
+                         setShowWarning(false);
+                         document.documentElement.requestFullscreen().catch(e => console.error(e));
+                     }}
+                     className="w-full h-12 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl"
+                   >
+                       Resume Assessment
+                   </Button>
+               </motion.div>
+           </div>
+       )}
        {/* Header */}
        <div className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex items-center justify-between px-8">
            <div className="flex items-center gap-2">

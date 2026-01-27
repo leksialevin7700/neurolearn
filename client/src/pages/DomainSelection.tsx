@@ -35,9 +35,9 @@ export const DomainSelection: React.FC = () => {
     setIsModalOpen(false);
 
     if (level === 'beginner') {
-      navigate(`/ roadmap / ${selectedDomain?.id} `);
+      navigate(`/roadmap/${selectedDomain?.id}`);
     } else {
-      navigate(`/ quiz / diagnostic / ${selectedDomain?.id} `);
+      navigate(`/quiz/diagnostic/${selectedDomain?.id}`);
     }
   };
 

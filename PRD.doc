@@ -1,0 +1,386 @@
+Alright. Here’s a **clean, judge-ready, hackathon-appropriate PRD** for your product.
+This is written exactly the way evaluators, mentors, and future teammates expect it to be written.
+
+---
+
+# **Product Requirements Document (PRD)**
+
+## **Product Name:** NeuroLearn
+
+## **Category:** AI-Powered Adaptive Learning Platform
+
+## **Context:** Hackathon Prototype (Simulated AI, Rule-Based Intelligence)
+
+---
+
+## **1. Product Vision**
+
+NeuroLearn is an **AI-powered, memory-aware learning platform** designed to simulate intelligent, personalized education.
+It focuses not only on *what* learners answer, but *how* they think, hesitate, revise, and remember over time.
+
+The platform demonstrates:
+
+* Thinking-first assessment
+* Personalized roadmaps
+* Memory-aware revision planning
+* Ethical, integrity-driven learning progression
+
+All intelligence is **simulated or rule-based**, making it feasible within a hackathon environment while still demonstrating strong AI concepts.
+
+---
+
+## **2. Goals & Objectives**
+
+### Primary Goals
+
+* Simulate **adaptive learning behavior**
+* Personalize **roadmaps, content, and progression**
+* Track **cognitive and behavioral signals**
+* Demonstrate **memory-aware revision logic**
+
+### Non-Goals (Hackathon Scope)
+
+* No heavy ML model training
+* No real-time recommendation retraining
+* No external LMS integrations
+
+---
+
+## **3. Target Users**
+
+* College students
+* Early professionals
+* Self-learners preparing for technical domains
+
+---
+
+## **4. Core Problems Addressed**
+
+* One-size-fits-all learning paths ignore user diversity
+* Traditional quizzes test recall, not understanding
+* Learners progress without mastering fundamentals
+* No system tracks forgetting or revision urgency
+
+---
+
+## **5. Authentication & User Identity**
+
+### Requirements
+
+* OAuth-based authentication
+* On first login, assign a **unique, static User ID**
+* User ID must persist across sessions
+
+### Purpose
+
+The User ID is used to:
+
+* Track learning progress
+* Store analytics
+* Maintain revision history
+* Personalize future learning paths
+
+---
+
+## **6. AI-Driven Onboarding & Intent Capture**
+
+### Flow
+
+1. User logs in for the first time
+2. System simulates an AI onboarding interaction
+3. User selects a learning domain
+
+### Supported Domains (Static for Hackathon)
+
+* Data Structures & Algorithms (DSA)
+* Web Development
+* AI / Machine Learning
+
+The selected domain is stored against the User ID.
+
+---
+
+## **7. Skill-Level Classification (New Feature)**
+
+When a user clicks a domain:
+
+### Skill Level Popup
+
+User must choose:
+
+* Beginner
+* Intermediate
+* Advanced
+
+#### Beginner Path
+
+* No assumptions about prior knowledge
+* Assign a **fixed, standard roadmap**
+* Minimal intelligence applied
+
+#### Intermediate / Advanced Path
+
+* Trigger a **standardized diagnostic quiz**
+* Quiz evaluates both knowledge and behavior
+
+---
+
+## **8. Diagnostic Quiz & Behavioral Analytics**
+
+### Captured Metrics
+
+* Accuracy
+* Time per question
+* Total time taken
+* Option switching behavior (A → B → A)
+* Number of clicks per question
+* Concept mapped per question
+
+### Output
+
+* AI-generated **proficiency score**
+* Concept-wise strength and weakness profile
+
+> AI may be simulated using rule-based logic or prompt-driven GenAI.
+
+All diagnostic data is sent to the backend as a structured document.
+
+---
+
+## **9. Personalized Roadmap Generation**
+
+### Logic
+
+* Roadmaps are **static in structure**
+* Personalization occurs in:
+
+  * Content depth
+  * Module emphasis
+  * Learning format (video/text/mixed)
+
+### Example (DSA)
+
+* Arrays
+* Linked Lists
+* Stacks
+* Queues
+
+Each topic expands into:
+
+* Video lectures (e.g., YouTube)
+* Text modules
+* TL;DR summaries for all content types
+
+Different users selecting the same domain may receive **different roadmaps**.
+
+---
+
+## **10. Course & Module Structure**
+
+### Hierarchy
+
+* Subject
+  → Courses
+  → Modules (exactly 5 per course)
+
+### Each Module Includes
+
+1. TL;DR summary
+2. Learning content (video/text/mixed)
+3. Micro quiz (mandatory)
+
+---
+
+## **11. Micro Quiz & AI Integrity Checker**
+
+### Quiz Characteristics
+
+* Full-screen / focus mode
+* Visible timer
+* No skipping
+* Mandatory submission
+
+### Captured Signals
+
+* Time spent reading
+* Time to answer
+* Accuracy
+* Option switching
+* User intuition text:
+
+  > “Why did you choose this answer?”
+
+### AI Evaluation
+
+* Generates a **true knowledge score**
+* Distinguishes guessing vs understanding
+* Breaks module concepts into:
+
+  * Strong concepts
+  * Weak concepts
+
+Example:
+
+> Module has 10 concepts → User weak in 3 concepts
+
+---
+
+## **12. AI-Driven Progression Logic**
+
+### If User Passes
+
+* Module marked as completed
+* Next module unlocked
+
+### If User Fails
+
+* Next module remains locked
+* System recommends:
+
+  * Revision
+  * Alternative explanations
+  * Different content format
+
+Only **cleared modules unlock progression**.
+
+---
+
+## **13. Targeted Re-Teaching System**
+
+* Users are re-taught **only weak concepts**
+* No full module repetition unless required
+* Alternative explanations or formats may be used
+
+This ensures:
+
+* Efficiency
+* Reduced frustration
+* Better retention
+
+---
+
+## **14. Analytics Storage**
+
+### Storage Format
+
+* JSON documents
+
+### Mapped To
+
+* User ID
+* Domain
+* Course
+* Module
+* Concept
+
+### Stored Metrics
+
+* Scores
+* Time spent
+* Attempts
+* Behavioral signals
+* Completion timestamps
+
+---
+
+## **15. Dashboard & Visualization**
+
+### Dashboard Displays
+
+* Module completion status
+* Scores & time spent
+* Strong vs weak concepts
+* Learning progression
+
+Visualizations help users:
+
+* Understand learning gaps
+* Track improvement
+* Plan revisions
+
+---
+
+## **16. Memory-Aware Revision Recommendation System**
+
+### Inputs
+
+* Quiz performance
+* Time since last interaction
+* Accuracy decay
+
+### Output Labels
+
+* “Revise right now!”
+* “Should be revised in 1–2 days”
+* “Can be revised later (within a week)”
+
+Displayed clearly alongside each module.
+
+---
+
+## **17. Ethical & Learning Principles**
+
+* Encourages thinking before answering
+* Prevents blind progression
+* Respects learner pace
+* Avoids punishment-based learning
+* Promotes mastery over speed
+
+---
+
+## **18. Technical Architecture (High Level)**
+
+### Frontend
+
+* React + TypeScript
+* Tailwind CSS + shadcn/ui
+* Framer Motion (animations)
+
+### Backend
+
+* Supabase (Auth + PostgreSQL)
+* Custom Node.js / TypeScript backend
+* JSON-based analytics storage
+
+### AI Layer (Simulated)
+
+* Rule-based logic
+* Prompt-driven GenAI
+* Agentic decision simulation
+
+---
+
+## **19. Success Metrics (Hackathon)**
+
+* % of personalized roadmaps generated
+* Module completion rate
+* Reduction in weak concepts over time
+* User engagement time
+* Accuracy vs time improvement
+
+---
+
+## **20. Risks & Mitigations**
+
+| Risk             | Mitigation                        |
+| ---------------- | --------------------------------- |
+| Over-complex AI  | Simulated, explainable logic      |
+| Time constraints | Static content + dynamic behavior |
+| Data overload    | Structured JSON analytics         |
+
+---
+
+## **21. Future Enhancements**
+
+* Real ML-based learner modeling
+* Spaced repetition algorithms
+* Cross-domain skill transfer
+* Instructor dashboards
+* Peer learning analytics
+
+---
+
+### **Final Note (for Judges)**
+
+NeuroLearn demonstrates **how AI can think with learners, not for them** — combining behavioral analytics, integrity checks, and memory awareness into a single adaptive learning system.
+

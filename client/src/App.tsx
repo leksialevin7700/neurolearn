@@ -17,21 +17,31 @@ const FriendsProgress = () => (
   </div>
 );
 
+import { ThemeProvider } from "@/components/theme-provider"
+
+import { DiagnosticQuiz } from './pages/DiagnosticQuiz';
+import { RoadmapView } from './pages/RoadmapView';
+
 function App() {
   return (
-    <Router>
-      <Layout>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Router>
         <Routes>
-          <Route path="/" element={<DomainSelection />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/calendar" element={<CalendarView />} />
-          <Route path="/friends" element={<FriendsProgress />} />
-          <Route path="/analytics" element={<div className="p-10 text-center">Analytics Dashboard Coming Soon</div>} />
-          <Route path="/settings" element={<div className="p-10 text-center">Settings Page Coming Soon</div>} />
-          <Route path="*" element={<div className="p-10 text-center">Page not found</div>} />
+          {/* Standalone Route for Focus Mode */}
+          <Route path="/quiz/diagnostic/:domainId" element={<DiagnosticQuiz />} />
+
+          {/* Layout Routes (Sidebar Visible) */}
+          <Route path="/" element={<Layout><DomainSelection /></Layout>} />
+          <Route path="/roadmap/:domainId" element={<Layout><RoadmapView /></Layout>} />
+          <Route path="/chat" element={<Layout><Chat /></Layout>} />
+          <Route path="/calendar" element={<Layout><CalendarView /></Layout>} />
+          <Route path="/friends" element={<Layout><FriendsProgress /></Layout>} />
+          <Route path="/analytics" element={<Layout><div className="p-10 text-center dark:text-white">Analytics Dashboard Coming Soon</div></Layout>} />
+          <Route path="/settings" element={<Layout><div className="p-10 text-center dark:text-white">Settings Page Coming Soon</div></Layout>} />
+          <Route path="*" element={<Layout><div className="p-10 text-center dark:text-white">Page not found</div></Layout>} />
         </Routes>
-      </Layout>
-    </Router>
+      </Router>
+    </ThemeProvider>
   );
 }
 

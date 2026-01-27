@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { DomainCard } from '@/components/domain/DomainCard';
+import { SkillModal } from '@/components/onboarding/SkillModal';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Search, Bell, Settings } from 'lucide-react';
+import { Search, Bell } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-// Mock data
+// Mock data (same as before)
 const DOMAINS = [
   { id: 'webdev', name: 'Web Development', description: '25 Lessons', color: "bg-purple-100", iconColor: "text-purple-600" },
   { id: 'appdev', name: 'App Development', description: '25 Lessons', color: "bg-cyan-100", iconColor: "text-cyan-600" },
@@ -15,29 +17,45 @@ const DOMAINS = [
 ];
 
 export const DomainSelection: React.FC = () => {
-  const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
+  const [selectedDomain, setSelectedDomain] = useState<{id: string, name: string} | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleDomainClick = (id: string) => {
-    setSelectedDomain(id);
+    const domain = DOMAINS.find(d => d.id === id);
+    if (domain) {
+      setSelectedDomain({ id: domain.id, name: domain.name });
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleLevelSelect = (level: 'beginner' | 'intermediate' | 'advanced') => {
+    setIsModalOpen(false);
+    
+    if (level === 'beginner') {
+      navigate(`/roadmap/${selectedDomain?.id}`); 
+    } else {
+      navigate(`/quiz/diagnostic/${selectedDomain?.id}`);
+    }
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 p-4 md:p-8 space-y-8">
+    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950 p-4 md:p-8 space-y-8">
       
       {/* Top Header Row */}
       <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Online Course</h1>
-            <p className="text-slate-500">Welcome back, Jayashree!</p>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Online Course</h1>
+            <p className="text-slate-500 dark:text-slate-400">Welcome back, Jayashree!</p>
           </div>
           <div className="flex items-center gap-4">
-              <Button variant="outline" size="icon" className="rounded-full bg-white border-none shadow-sm h-10 w-10 text-slate-400 hover:text-indigo-600">
+              <Button variant="outline" size="icon" className="rounded-full bg-white dark:bg-slate-900 border-none shadow-sm h-10 w-10 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
                  <Search className="h-5 w-5" />
               </Button>
-              <Button variant="outline" size="icon" className="rounded-full bg-white border-none shadow-sm h-10 w-10 text-slate-400 hover:text-indigo-600">
+              <Button variant="outline" size="icon" className="rounded-full bg-white dark:bg-slate-900 border-none shadow-sm h-10 w-10 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400">
                  <Bell className="h-5 w-5" />
               </Button>
-               <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm">
+               <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white dark:border-slate-800 shadow-sm">
                   <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
                </div>
           </div>
@@ -72,10 +90,7 @@ export const DomainSelection: React.FC = () => {
              </Button>
           </div>
 
-          {/* 3D Illustration Placeholder */}
           <div className="hidden md:block w-64 h-64 relative">
-             {/* We simulate the 3D guy with a vibrant abstract shape or image if available */}
-             {/* For now, using a placeholder that looks cool */}
              <div className="w-full h-full flex items-center justify-center">
                  <div className="text-[100px]">🚀</div>
              </div>
@@ -87,8 +102,8 @@ export const DomainSelection: React.FC = () => {
       {/* Course Grid Section */}
       <div className="space-y-4">
         <div className="flex justify-between items-end">
-            <h3 className="text-xl font-bold text-slate-800">New Courses</h3>
-            <span className="text-sm font-medium text-slate-400 cursor-pointer hover:text-indigo-600">See All</span>
+            <h3 className="text-xl font-bold text-slate-800 dark:text-white">New Courses</h3>
+            <span className="text-sm font-medium text-slate-400 cursor-pointer hover:text-indigo-600 dark:hover:text-indigo-400">See All</span>
         </div>
 
         <motion.div 
@@ -112,6 +127,16 @@ export const DomainSelection: React.FC = () => {
           ))}
         </motion.div>
       </div>
+
+       {/* Skill Assessment Modal */}
+       {selectedDomain && (
+        <SkillModal 
+          isOpen={isModalOpen} 
+          onClose={() => setIsModalOpen(false)}
+          domainName={selectedDomain.name}
+          onSelectLevel={handleLevelSelect}
+        />
+      )}
 
     </div>
   );

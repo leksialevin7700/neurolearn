@@ -31,7 +31,7 @@ export const DomainCard: React.FC<DomainProps> = ({ id, name, description, color
 
   return (
     <Card 
-      className="group border-none shadow-sm bg-white hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 rounded-3xl overflow-hidden cursor-pointer"
+      className="group border-none shadow-sm bg-white dark:bg-slate-900 border dark:border-slate-800 hover:shadow-xl hover:shadow-indigo-500/10 dark:hover:shadow-indigo-900/20 transition-all duration-300 rounded-3xl overflow-hidden cursor-pointer"
       onClick={() => onClick(id)}
     >
       <CardContent className="p-6 flex flex-col items-center text-center space-y-4">

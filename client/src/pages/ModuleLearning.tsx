@@ -130,7 +130,7 @@ export const ModuleLearning: React.FC = () => {
                              <h4 className="font-bold text-slate-900 dark:text-white">Ready to test your knowledge?</h4>
                              <p className="text-sm text-slate-500">Take a quick mini-quiz to complete this module.</p>
                          </div>
-                         <Button onClick={() => navigate(`/quiz/diagnostic/${domainId}`)} size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl">
+                         <Button onClick={() => navigate(`/quiz/diagnostic/${domainId}`, { state: { fromModule: true } })} size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl">
                              Start Mini Quiz <ArrowRight className="w-4 h-4 ml-2" />
                          </Button>
                      </div>

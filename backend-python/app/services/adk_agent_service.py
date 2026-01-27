@@ -27,15 +27,28 @@ class ADKAgentService:
         self.max_tokens = settings.MAX_TOKENS
         
         # Initialize ADK client if enabled
+        log_msg = f"DEBUG: ADK_ENABLED={self.adk_enabled}, API_KEY_LENGTH={len(self.api_key) if self.api_key else 0}, SETTINGS_MODEL={settings.DEFAULT_MODEL}\n"
+        with open("backend_debug.log", "a") as f:
+            f.write(log_msg)
+            
         if self.adk_enabled and self.api_key:
             try:
                 import google.generativeai as genai
                 genai.configure(api_key=self.api_key)
                 self.client = genai.GenerativeModel(self.model)
+                with open("backend_debug.log", "a") as f:
+                    f.write(f"DEBUG: ADK Client initialized with model {self.model} (Self.model)\n")
             except ImportError:
-                print("⚠️  Google Generative AI package not installed. ADK features limited.")
+                with open("backend_debug.log", "a") as f:
+                    f.write("Error: Google Generative AI package not installed. ADK features limited.\n")
+                self.client = None
+            except Exception as e:
+                with open("backend_debug.log", "a") as f:
+                    f.write(f"Error initializing ADK client: {e}\n")
                 self.client = None
         else:
+            with open("backend_debug.log", "a") as f:
+                f.write("DEBUG: ADK Client NOT initialized (missing key or disabled)\n")
             self.client = None
     
     async def generate_roadmap(
@@ -230,7 +243,8 @@ class ADKAgentService:
             )
             
         except Exception as e:
-            print(f"Error generating learning module: {e}")
+            with open("backend_debug.log", "a") as f:
+                f.write(f"Error generating learning module: {e}\n")
             return self._generate_mock_module(topic, format_preference)
     
     def _create_roadmap_prompt(

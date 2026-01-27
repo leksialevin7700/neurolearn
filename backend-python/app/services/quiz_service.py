@@ -133,7 +133,7 @@ class QuizService:
         # Determine next action
         if passed and not revision_need:
             next_action = "proceed_to_next_module"
-        elif passed but revision_need:
+        elif passed and revision_need:
             next_action = "optional_revision_then_proceed"
         else:
             next_action = "complete_revision_before_proceeding"

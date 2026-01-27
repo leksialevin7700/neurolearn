@@ -14,10 +14,10 @@ from app.core.config import settings
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan events"""
-    print("🚀 NeuroLearn Backend Starting...")
-    print(f"📍 Environment: {settings.ENVIRONMENT}")
+    print("NeuroLearn Backend Starting...")
+    print(f"Environment: {settings.ENVIRONMENT}")
     yield
-    print("👋 NeuroLearn Backend Shutting Down...")
+    print("NeuroLearn Backend Shutting Down...")
 
 
 # Initialize FastAPI app

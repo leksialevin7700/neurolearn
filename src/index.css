@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* NeuroLearn Design System - Neural Network Aesthetic */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+@layer base {
+  :root {
+    /* Core palette - Deep space navy with electric accents */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
+
+    --card: 222 47% 9%;
+    --card-foreground: 210 40% 96%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 96%;
+
+    /* Neural cyan primary */
+    --primary: 185 85% 50%;
+    --primary-foreground: 222 47% 6%;
+    --primary-glow: 185 100% 60%;
+
+    /* Warm amber secondary - for progress/achievements */
+    --secondary: 38 92% 55%;
+    --secondary-foreground: 222 47% 6%;
+
+    --muted: 222 30% 15%;
+    --muted-foreground: 215 20% 55%;
+
+    /* Accent - purple for AI elements */
+    --accent: 265 85% 60%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Success green */
+    --success: 142 70% 45%;
+    --success-foreground: 210 40% 98%;
+
+    /* Warning amber */
+    --warning: 38 92% 55%;
+    --warning-foreground: 222 47% 6%;
+
+    --border: 222 30% 18%;
+    --input: 222 30% 18%;
+    --ring: 185 85% 50%;
+
+    --radius: 0.75rem;
+
+    /* Neural gradients */
+    --gradient-neural: linear-gradient(135deg, hsl(185 85% 50% / 0.2), hsl(265 85% 60% / 0.2));
+    --gradient-glow: linear-gradient(135deg, hsl(185 100% 60%), hsl(265 85% 60%));
+    --gradient-card: linear-gradient(180deg, hsl(222 47% 11%), hsl(222 47% 8%));
+    --gradient-progress: linear-gradient(90deg, hsl(185 85% 50%), hsl(38 92% 55%));
+
+    /* Shadows */
+    --shadow-glow: 0 0 30px hsl(185 85% 50% / 0.3);
+    --shadow-card: 0 10px 40px hsl(222 47% 3% / 0.5);
+    --shadow-hover: 0 20px 60px hsl(222 47% 3% / 0.7);
+
+    /* Sidebar */
+    --sidebar-background: 222 47% 8%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 185 85% 50%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 222 30% 15%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 222 30% 18%;
+    --sidebar-ring: 185 85% 50%;
+  }
+
+  .dark {
+    /* Same as root - this is a dark-first design */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 96%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer components {
+  /* Neural glow effect */
+  .neural-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .neural-glow-text {
+    text-shadow: 0 0 20px hsl(185 85% 50% / 0.5);
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: var(--gradient-glow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Neural card */
+  .neural-card {
+    background: var(--gradient-card);
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
+  }
+
+  .neural-card:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: hsl(var(--primary) / 0.3);
+  }
+
+  /* Progress bar with gradient */
+  .progress-gradient {
+    background: var(--gradient-progress);
+  }
+
+  /* Pulse animation for active elements */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px hsl(185 85% 50% / 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px hsl(185 85% 50% / 0.6);
+    }
+  }
+
+  /* Floating animation */
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  /* Fade in animation */
+  .animate-fade-in {
+    animation: fade-in 0.3s ease-in forwards;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Scale in animation */
+  .animate-scale-in {
+    animation: scale-in 0.4s ease-out forwards;
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Neural network background pattern */
+  .neural-bg {
+    background-image: 
+      radial-gradient(ellipse at 20% 50%, hsl(185 85% 50% / 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, hsl(265 85% 60% / 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 40% 80%, hsl(38 92% 55% / 0.05) 0%, transparent 50%);
+  }
+
+  /* Lock icon styling */
+  .module-locked {
+    opacity: 0.5;
+    filter: grayscale(0.8);
+  }
+
+  .module-available {
+    border-color: hsl(var(--primary) / 0.5);
+  }
+
+  .module-completed {
+    border-color: hsl(var(--success) / 0.5);
+  }
+
+  /* Quiz fullscreen mode */
+  .quiz-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: hsl(var(--background));
+  }
+
+  /* Revision urgency badges */
+  .urgency-high {
+    background: hsl(0 84% 55% / 0.2);
+    color: hsl(0 84% 65%);
+    border: 1px solid hsl(0 84% 55% / 0.3);
+  }
+
+  .urgency-medium {
+    background: hsl(38 92% 55% / 0.2);
+    color: hsl(38 92% 65%);
+    border: 1px solid hsl(38 92% 55% / 0.3);
+  }
+
+  .urgency-low {
+    background: hsl(142 70% 45% / 0.2);
+    color: hsl(142 70% 55%);
+    border: 1px solid hsl(142 70% 45% / 0.3);
+  }
+}
+
+@layer utilities {
+  .glass {
+    backdrop-filter: blur(12px);
+    background: hsl(var(--card) / 0.8);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "topics": [
+    {
+      "name": "user_login_events",
+      "partitions": 1,
+      "replicationFactor": 1,
+      "retention": "7d",
+      "description": "User session tracking and DAU metrics",
+      "schema": {
+        "event_type": "user_login",
+        "user_id": "string",
+        "domain": "string (optional, if already selected)",
+        "timestamp": "ISO8601",
+        "session_id": "string"
+      }
+    },
+    {
+      "name": "learning_domain_selection_events",
+      "partitions": 1,
+      "replicationFactor": 1,
+      "retention": "7d",
+      "description": "Track domain selection for roadmap analytics",
+      "schema": {
+        "event_type": "domain_selected",
+        "user_id": "string",
+        "domain": "string (dsa|webdev|ai-ml)",
+        "timestamp": "ISO8601"
+      }
+    },
+    {
+      "name": "diagnostic_quiz_events",
+      "partitions": 1,
+      "replicationFactor": 1,
+      "retention": "7d",
+      "description": "Initial assessment performance and content format recommendation",
+      "schema": {
+        "event_type": "diagnostic_quiz_completed",
+        "user_id": "string",
+        "domain": "string",
+        "score": "number (0-100)",
+        "max_score": "number",
+        "total_time_seconds": "number",
+        "recommended_format": "string (video|text|mixed)",
+        "concepts_covered": "string[]",
+        "timestamp": "ISO8601"
+      }
+    },
+    {
+      "name": "module_quiz_events",
+      "partitions": 1,
+      "replicationFactor": 1,
+      "retention": "7d",
+      "description": "Module-level quiz performance for memory scoring",
+      "schema": {
+        "event_type": "module_quiz_completed",
+        "user_id": "string",
+        "domain": "string",
+        "course": "string (optional)",
+        "module": "string",
+        "module_index": "number",
+        "score": "number (0-100)",
+        "max_score": "number",
+        "total_time_seconds": "number",
+        "attempts": "number",
+        "concepts_tested": "string[]",
+        "passed": "boolean (score >= 60)",
+        "timestamp": "ISO8601"
+      }
+    },
+    {
+      "name": "module_completion_events",
+      "partitions": 1,
+      "replicationFactor": 1,
+      "retention": "7d",
+      "description": "Module completion milestone for progress tracking",
+      "schema": {
+        "event_type": "module_completed",
+        "user_id": "string",
+        "domain": "string",
+        "course": "string (optional)",
+        "module": "string",
+        "completion_time_seconds": "number",
+        "total_attempts": "number",
+        "final_score": "number",
+        "content_format_used": "string (video|text)",
+        "next_module": "string (optional, if available)",
+        "timestamp": "ISO8601"
+      }
+    },
+    {
+      "name": "revision_recommendation_events",
+      "partitions": 1,
+      "replicationFactor": 1,
+      "retention": "7d",
+      "description": "Spaced repetition signals for memory review scheduling",
+      "schema": {
+        "event_type": "revision_scheduled",
+        "user_id": "string",
+        "module": "string",
+        "domain": "string",
+        "urgency_level": "string (high|medium|low)",
+        "reason": "string (memory_decay|low_confidence|scheduled_review)",
+        "last_review_date": "ISO8601",
+        "recommended_review_date": "ISO8601",
+        "current_memory_score": "number (0-100)",
+        "forgetting_score": "number (0-100)",
+        "timestamp": "ISO8601"
+      }
+    }
+  ],
+  "topicCreationScript": {
+    "description": "Create all topics with single command",
+    "command": "for topic in user_login_events learning_domain_selection_events diagnostic_quiz_events module_quiz_events module_completion_events revision_recommendation_events; do docker exec kafka kafka-topics.sh --create --topic $topic --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1; done"
+  }
+}

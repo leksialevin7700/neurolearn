@@ -31,7 +31,7 @@ export const DomainCard: React.FC<DomainProps> = ({ id, name, description, color
 
   return (
     <Card 
-      className="group border-none shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 rounded-3xl overflow-hidden cursor-pointer"
+      className="group border-none shadow-sm bg-white hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 rounded-3xl overflow-hidden cursor-pointer"
       onClick={() => onClick(id)}
     >
       <CardContent className="p-6 flex flex-col items-center text-center space-y-4">
@@ -48,8 +48,7 @@ export const DomainCard: React.FC<DomainProps> = ({ id, name, description, color
          </div>
 
          {/* Footer Row */}
-         <div className="w-full pt-4 flex items-center justify-between border-t border-slate-50 mt-4">
-            <span className="font-bold text-slate-900">{price}</span>
+         <div className="w-full pt-4 flex items-center justify-end border-t border-slate-50 mt-4">
             <Button size="icon" className="rounded-full w-8 h-8 bg-slate-900 text-white hover:bg-indigo-600 transition-colors">
                <ArrowRight className="w-4 h-4" />
             </Button>

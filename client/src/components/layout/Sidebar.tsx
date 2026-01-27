@@ -10,7 +10,7 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ className }) => {
   const navItems = [
     { icon: Home, label: "Home", href: "/", active: true },
-    { icon: BookOpen, label: "Students", href: "/students", active: false },
+    { icon: BookOpen, label: "Friends Progress", href: "/friends", active: false },
     { icon: MessageCircle, label: "Chat", href: "/chat", active: false },
     { icon: BarChart2, label: "Progress", href: "/analytics", active: false },
     { icon: Calendar, label: "Calendar", href: "/calendar", active: false },
@@ -18,8 +18,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ className }) => {
   ];
 
   return (
-    <div className={cn("pb-12 min-h-screen bg-slate-50 border-r-0 md:w-72 hidden md:block pl-4 pr-4 pt-6", className)}>
-      <div className="space-y-6">
+    <div className={cn("hidden md:flex flex-col h-screen py-6 pl-4 pr-4 bg-slate-50 border-r-0 md:w-72 sticky top-0", className)}>
+      <div className="space-y-6 flex-1">
         {/* Logo Area */}
         <div className="px-4 py-2 flex items-center gap-3 mb-8">
            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
@@ -51,19 +51,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ className }) => {
       </div>
       
       {/* Bottom Profile Section */}
-      <div className="absolute bottom-6 px-4 w-full left-0">
-          <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-3">
-             <div className="relative">
-                <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden">
+      <div className="mt-auto px-2">
+          <div className="flex items-center gap-3 px-2 py-3 rounded-2xl hover:bg-white hover:shadow-sm transition-all cursor-pointer group">
+             <div className="relative shrink-0">
+                <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border border-slate-200 group-hover:border-indigo-200 transition-colors">
                     <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
                 </div>
-                <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-white rounded-full"></div>
+                <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full"></div>
              </div>
-             <div className="flex-1 overflow-hidden">
-                 <p className="text-sm font-bold text-slate-800 truncate">Jayashree M.</p>
-                 <p className="text-xs text-slate-500 truncate">Free Plan</p>
+             <div className="flex-1 min-w-0">
+                 <p className="text-sm font-bold text-slate-800 truncate">Jayashree</p>
+                 <p className="text-xs text-slate-400 truncate">Student Account</p>
              </div>
-             <Settings className="w-4 h-4 text-slate-400 cursor-pointer hover:text-indigo-600" />
+             <Button variant="ghost" size="icon" className="text-slate-400 hover:text-indigo-600 rounded-full h-8 w-8">
+                <LogOut className="w-4 h-4" />
+             </Button>
           </div>
       </div>
     </div>

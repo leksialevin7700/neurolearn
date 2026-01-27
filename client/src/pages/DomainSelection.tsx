@@ -6,12 +6,12 @@ import { Search, Bell, Settings } from 'lucide-react';
 
 // Mock data
 const DOMAINS = [
-  { id: 'webdev', name: 'Web Development', description: '25 Lessons', price: '$25', color: "bg-purple-100", iconColor: "text-purple-600" },
-  { id: 'appdev', name: 'App Development', description: '25 Lessons', price: '$25', color: "bg-cyan-100", iconColor: "text-cyan-600" },
-  { id: 'marketing', name: 'Social Media Marketing', description: '25 Lessons', price: '$25', color: "bg-orange-100", iconColor: "text-orange-600" },
-  { id: 'dsa', name: 'DSA & Algorithms', description: '40 Lessons', price: '$30', color: "bg-blue-100", iconColor: "text-blue-600" },
-  { id: 'devops', name: 'DevOps & Docker', description: '15 Lessons', price: '$40', color: "bg-pink-100", iconColor: "text-pink-600" },
-  { id: 'aiml', name: 'AI & Machine Learning', description: '50 Lessons', price: '$50', color: "bg-emerald-100", iconColor: "text-emerald-600" },
+  { id: 'webdev', name: 'Web Development', description: '25 Lessons', color: "bg-purple-100", iconColor: "text-purple-600" },
+  { id: 'appdev', name: 'App Development', description: '25 Lessons', color: "bg-cyan-100", iconColor: "text-cyan-600" },
+  { id: 'marketing', name: 'Social Media Marketing', description: '25 Lessons', color: "bg-orange-100", iconColor: "text-orange-600" },
+  { id: 'dsa', name: 'DSA & Algorithms', description: '40 Lessons', color: "bg-blue-100", iconColor: "text-blue-600" },
+  { id: 'devops', name: 'DevOps & Docker', description: '15 Lessons', color: "bg-pink-100", iconColor: "text-pink-600" },
+  { id: 'aiml', name: 'AI & Machine Learning', description: '50 Lessons', color: "bg-emerald-100", iconColor: "text-emerald-600" },
 ];
 
 export const DomainSelection: React.FC = () => {
@@ -107,7 +107,6 @@ export const DomainSelection: React.FC = () => {
                 description={domain.description}
                 color={domain.color}
                 iconColor={domain.iconColor}
-                price={domain.price}
                 onClick={handleDomainClick}
              />
           ))}

@@ -1,26 +1,20 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Layout } from './components/layout/Layout';
+import { DomainSelection } from './pages/DomainSelection';
+import './App.css';
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+function App() {
+  return (
+    <Router>
+      <Layout>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<DomainSelection />} />
+          {/* We will add more routes here later (e.g. /roadmap, /quiz) */}
+          <Route path="*" element={<div className="p-10 text-center">Page not found</div>} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+      </Layout>
+    </Router>
+  );
+}
 
 export default App;

@@ -97,7 +97,7 @@ export const RoadmapView: React.FC = () => {
                             </h3>
 
                             {isCurrent && (
-                                <Button className="rounded-full px-6 bg-indigo-600 hover:bg-indigo-700 text-white">
+                                <Button onClick={() => window.location.href = `/learn/${domainId}/${module.id}`} className="rounded-full px-6 bg-indigo-600 hover:bg-indigo-700 text-white">
                                    Start Module
                                 </Button>
                             )}

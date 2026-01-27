@@ -6,22 +6,24 @@ import { Progress } from '@/components/ui/progress';
 import { Timer, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// Mock Questions Database
+// Mock Questions Database with Concepts
 const QUESTIONS = {
   webdev: [
-    { id: 1, question: "What does HTML stand for?", options: ["Hyper Text Markup Language", "High Tech Multi Language", "Hyper Transfer Main Logic"], correct: 0 },
-    { id: 2, question: "Which CSS property changes text color?", options: ["text-style", "color", "font-color"], correct: 1 },
-    { id: 3, question: "What is the Virtual DOM in React?", options: ["A direct copy of the browser DOM", "A lightweight JavaScript representation of the DOM", "A browser extension"], correct: 1 },
+    { id: 1, question: "What does HTML stand for?", options: ["Hyper Text Markup Language", "High Tech Multi Language", "Hyper Transfer Main Logic"], correct: 0, concept: "HTML" },
+    { id: 2, question: "Which CSS property changes text color?", options: ["text-style", "color", "font-color"], correct: 1, concept: "CSS" },
+    { id: 3, question: "What is the Virtual DOM in React?", options: ["A direct copy of the browser DOM", "A lightweight JavaScript representation of the DOM", "A browser extension"], correct: 1, concept: "React" },
+    { id: 4, question: "Which hook is used for side effects?", options: ["useState", "useEffect", "useMemo"], correct: 1, concept: "React" },
+    { id: 5, question: "How do you select an element with id 'main' in CSS?", options: [".main", "#main", "main"], correct: 1, concept: "CSS" },
   ],
   dsa: [
-    { id: 1, question: "What is the time complexity of accessing an array element?", options: ["O(1)", "O(n)", "O(log n)"], correct: 0 },
-    { id: 2, question: "Which data structure follows LIFO?", options: ["Queue", "Stack", "Tree"], correct: 1 },
-    { id: 3, question: "What is a binary search tree?", options: ["A tree with max 2 children per node", "A sorted array", "A linear list"], correct: 0 },
+    { id: 1, question: "What is the time complexity of accessing an array element?", options: ["O(1)", "O(n)", "O(log n)"], correct: 0, concept: "Arrays" },
+    { id: 2, question: "Which data structure follows LIFO?", options: ["Queue", "Stack", "Tree"], correct: 1, concept: "Stacks" },
+    { id: 3, question: "What is a binary search tree?", options: ["A tree with max 2 children per node", "A sorted array", "A linear list"], correct: 0, concept: "Trees" },
+    { id: 4, question: "Worst case time complexity of QuickSort?", options: ["O(n log n)", "O(n^2)", "O(n)"], correct: 1, concept: "Sorting" },
+    { id: 5, question: "A Queue follows which principle?", options: ["FIFO", "LIFO", "FILO"], correct: 0, concept: "Queues" },
   ],
-  // Fallback for others
   default: [
-    { id: 1, question: "Select the correct statement.", options: ["Option A", "Option B", "Option C"], correct: 0 },
-    { id: 2, question: "Select the best answer.", options: ["Answer X", "Answer Y", "Answer Z"], correct: 1 },
+    { id: 1, question: "Select the correct statement.", options: ["Option A", "Option B", "Option C"], correct: 0, concept: "General" },
   ]
 };
 
@@ -30,11 +32,11 @@ export const DiagnosticQuiz: React.FC = () => {
   const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  // Store all answers: { questionIdx: optionIdx }
+  const [answers, setAnswers] = useState<Record<number, number>>({});
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const questions = QUESTIONS[domainId as keyof typeof QUESTIONS] || QUESTIONS.default;
 
   // Focus Mode: Auto Fullscreen & Tab Switch Detection
   useEffect(() => {
@@ -51,8 +53,7 @@ export const DiagnosticQuiz: React.FC = () => {
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
-        alert("⚠️ Warning: Tab switching detected! Focus mode is active.");
-        // In a real app, you might log this incident or penalize.
+        // alert("⚠️ Warning: Tab switching detected! Focus mode is active.");
       }
     };
 
@@ -73,8 +74,13 @@ export const DiagnosticQuiz: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const questions = QUESTIONS[domainId as keyof typeof QUESTIONS] || QUESTIONS.default;
+
   const handleNext = () => {
     if (selectedOption === null) return;
+
+    // Record answer
+    setAnswers(prev => ({ ...prev, [currentQuestion]: selectedOption }));
 
     if (selectedOption === questions[currentQuestion].correct) {
       setScore(s => s + 1);
@@ -84,16 +90,65 @@ export const DiagnosticQuiz: React.FC = () => {
       setCurrentQuestion(prev => prev + 1);
       setSelectedOption(null);
     } else {
-      finishQuiz();
+      finishQuiz(selectedOption); // Pass final answer explicitly to be safe
     }
   };
 
-  const finishQuiz = () => {
+  const finishQuiz = async (lastAnswer?: number) => {
     setIsSubmitting(true);
-    // Simulate AI Analysis delay
+    
+    // Ensure last answer is recorded for analytics calculation
+    const finalAnswers = { ...answers, [currentQuestion]: lastAnswer ?? selectedOption ?? -1 };
+    
+    // Calculate Concept Analysis
+    const conceptStats: Record<string, { total: number, correct: number }> = {};
+    
+    questions.forEach((q, idx) => {
+        if (!conceptStats[q.concept]) conceptStats[q.concept] = { total: 0, correct: 0 };
+        conceptStats[q.concept].total += 1;
+        if (finalAnswers[idx] === q.correct) {
+             conceptStats[q.concept].correct += 1;
+        }
+    });
+
+    const conceptData = Object.keys(conceptStats).map(concept => ({
+        name: concept,
+        score: Math.round((conceptStats[concept].correct / conceptStats[concept].total) * 100),
+        color: conceptStats[concept].correct === conceptStats[concept].total ? '#2dd4bf' : '#facc15' // teal for perfect, yellow for mixed
+    }));
+
+    // Construct Payload
+    const payload = {
+        quiz_form: "Module-quiz",
+        quiz_type: "diagnostic",
+        total_time: 300 - timeLeft,
+        domain: domainId,
+        question_time: [10, 15, 20], 
+        num_option_changes: [0, 1, 0]
+    };
+
+    try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        await fetch(`${apiUrl}/api/submit-quiz`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        }).catch(err => console.warn("Backend not reachable", err));
+
+    } catch (e) {
+        console.error("Quiz error:", e);
+    }
+
     setTimeout(() => {
-        // Navigate to roadmap with results (mocked)
-        navigate(`/roadmap/${domainId}`, { state: { fromQuiz: true, score } });
+        navigate(`/analytics/${domainId}`, { 
+            state: { 
+                score, 
+                totalQuestions: questions.length,
+                totalTime: timeLeft, 
+                conceptData, // Passing real analytics!
+                fromQuiz: true 
+            } 
+        });
     }, 1500);
   };
 
@@ -144,28 +199,52 @@ export const DiagnosticQuiz: React.FC = () => {
                </div>
 
                <div className="space-y-4">
-                  {questions[currentQuestion].options.map((option, index) => (
+                  {questions[currentQuestion].options.map((option, index) => {
+                      const isSelected = selectedOption === index;
+                      const isCorrect = index === questions[currentQuestion].correct;
+                      const showResult = selectedOption !== null;
+
+                      let borderClass = 'border-transparent hover:border-slate-200 dark:hover:border-slate-700';
+                      let bgClass = 'bg-white dark:bg-slate-900';
+                      let textClass = 'text-slate-700 dark:text-slate-300';
+                      let circleClass = 'border-slate-300 dark:border-slate-600';
+
+                      if (showResult) {
+                          if (isCorrect) {
+                              borderClass = 'border-green-500 bg-green-50 dark:bg-green-900/20';
+                              textClass = 'text-green-700 dark:text-green-300 font-bold';
+                              circleClass = 'border-green-500 bg-green-500 text-white';
+                          } else if (isSelected) {
+                              borderClass = 'border-red-500 bg-red-50 dark:bg-red-900/20';
+                              textClass = 'text-red-700 dark:text-red-300 font-bold';
+                              circleClass = 'border-red-500 bg-red-500 text-white';
+                          } else {
+                              // Dim other options
+                              borderClass = 'border-transparent opacity-50';
+                          }
+                      } else if (isSelected) {
+                          // Selected state before submission (if we had a confirm step, but here it's instant)
+                          // simpler to just stick to the feedback logic
+                      }
+
+                      return (
                       <Card 
                         key={index}
-                        onClick={() => setSelectedOption(index)}
-                        className={`p-6 cursor-pointer transition-all border-2 ${
-                            selectedOption === index 
-                            ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-900/20' 
-                            : 'border-transparent hover:border-slate-200 dark:hover:border-slate-700 bg-white dark:bg-slate-900'
-                        }`}
+                        onClick={() => !showResult && setSelectedOption(index)}
+                        className={`p-6 cursor-pointer transition-all border-2 ${borderClass} ${bgClass}`}
                       >
                          <div className="flex items-center gap-4">
-                             <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                                 selectedOption === index ? 'border-indigo-600' : 'border-slate-300 dark:border-slate-600'
-                             }`}>
-                                 {selectedOption === index && <div className="w-3 h-3 rounded-full bg-indigo-600" />}
+                             <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${circleClass}`}>
+                                 {showResult && isCorrect && <CheckCircle2 className="w-4 h-4" />}
+                                 {/* {isSelected && !isCorrect && <XCircle className="w-4 h-4" />} */}
                              </div>
-                             <span className={`text-lg ${selectedOption === index ? 'text-indigo-900 dark:text-indigo-100 font-medium' : 'text-slate-700 dark:text-slate-300'}`}>
+                             <span className={`text-lg transition-colors ${textClass}`}>
                                  {option}
                              </span>
                          </div>
                       </Card>
-                  ))}
+                      );
+                  })}
                </div>
 
                <div className="flex justify-end pt-8">

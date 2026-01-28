@@ -1,4 +1,4 @@
-# 🧠 NeuroLearn - The AI-Powered Adaptive Learning Platform
+#  NeuroLearn - The AI-Powered Adaptive Learning Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -6,21 +6,7 @@ NeuroLearn is a next-generation adaptive learning platform that creates personal
 
 ---
 
-## 📜 Table of Contents
 
-- [About The Project](#about-the-project)
-- [✨ Features](#-features)
-- [🏛️ System Architecture](#️-system-architecture)
-- [🤖 Tech Stack](#-tech-stack)
-- [🚀 Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [1. Infrastructure Setup](#1-infrastructure-setup)
-  - [2. Backend Setup (Python AI Service)](#2-backend-setup-python-ai-service)
-  - [3. Frontend Setup (React Client)](#3-frontend-setup-react-client)
-- [🤝 Contributing](#-contributing)
-- [📝 License](#-license)
-
----
 
 ## About The Project
 
@@ -34,28 +20,28 @@ This project was built with a modern, decoupled architecture, making it scalable
 
 ---
 
-## ✨ Features
+## Features
 
 ### Core Learning
-- **🤖 AI-Generated Roadmaps**: Personalized learning paths created after an initial diagnostic quiz.
-- **📚 Adaptive Content Generation**: AI-powered learning modules tailored to your skill level and weak spots, powered by Google Gemini.
-- **📝 Module Quizzes**: Assess understanding at each step of your roadmap.
-- **💡 Spaced Repetition**: Intelligently schedules revision sessions based on memory decay curves to ensure long-term retention.
+- **AI-Generated Roadmaps**: Personalized learning paths created after an initial diagnostic quiz.
+- **Adaptive Content Generation**: AI-powered learning modules tailored to your skill level and weak spots, powered by Google Gemini.
+- **Module Quizzes**: Assess understanding at each step of your roadmap.
+- **Spaced Repetition**: Intelligently schedules revision sessions based on memory decay curves to ensure long-term retention.
 
 ### Analytics & Insights
-- **🧠 Behavioral Analysis**: Goes beyond right or wrong, analyzing confidence, decision patterns, and time management.
-- **💸 Proficiency Scoring**: A weighted algorithm calculates your true mastery based on accuracy, confidence, and efficiency.
-- **📈 Real-time Dashboards**: Live visualization of your learning progress, engagement, and memory scores via Grafana.
-- **💪 Strengths & Weaknesses**: Clear identification of concepts you've mastered and those that need more attention.
+- **Behavioral Analysis**: Goes beyond right or wrong, analyzing confidence, decision patterns, and time management.
+- **Proficiency Scoring**: A weighted algorithm calculates your true mastery based on accuracy, confidence, and efficiency.
+- **Real-time Dashboards**: Live visualization of your learning progress, engagement, and memory scores via Grafana.
+- **Strengths & Weaknesses**: Clear identification of concepts you've mastered and those that need more attention.
 
 ### Technical
-- ** Kafka Event Streaming**: Decoupled and scalable architecture for handling analytics events.
-- ** Decoupled Services**: Independent frontend, AI backend, and analytics services.
-- ** Dockerized Infrastructure**: Easy-to-run local development environment for all necessary backing services.
+- **Kafka Event Streaming**: Decoupled and scalable architecture for handling analytics events.
+- **Decoupled Services**: Independent frontend, AI backend, and analytics services.
+- **Dockerized Infrastructure**: Easy-to-run local development environment for all necessary backing services.
 
 ---
 
-## 🏛️ System Architecture
+##  System Architecture
 
 NeuroLearn operates on a distributed microservices architecture, ensuring scalability and separation of concerns.
 
@@ -97,7 +83,7 @@ NeuroLearn operates on a distributed microservices architecture, ensuring scalab
 
 ---
 
-## 🤖 Tech Stack
+##  Tech Stack
 
 **Frontend:**
 - [React](https://reactjs.org/)
@@ -124,7 +110,7 @@ NeuroLearn operates on a distributed microservices architecture, ensuring scalab
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 Follow these steps to set up and run the complete NeuroLearn platform locally.
 
@@ -197,20 +183,20 @@ cp .env.example .env
 # Start the development server
 npm run dev
 ```
-The NeuroLearn web app is now accessible at **http://localhost:5173** (or another port if 5173 is busy).
+The NeuroLearn web app is now accessible at **http://localhost:8080**.
 
 *Note: Instructions for the Node.js analytics service are pending and will be added soon.*
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
-Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Any contributions you make are **greatly appreciated**.
 
 Please fork the repo and create a pull request.
 
 ---
 
-## 📝 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
